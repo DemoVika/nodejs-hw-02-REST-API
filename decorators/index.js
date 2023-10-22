@@ -1,3 +1,3 @@
 const { validateBody } = require("./validateBody");
-
-module.exports = { validateBody };
+const { controllerWrapper } = require("./controllerWrapper");
+module.exports = { validateBody, controllerWrapper };
