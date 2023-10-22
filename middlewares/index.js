@@ -1,5 +1,4 @@
-const { isEmptyBody } = require("./isEmptyBody");
 const { isValidId } = require("./isValidId");
-const { isEmptyFav } = require("./isEmptyFav");
+const { authenticate } = require("./authenticate");
 
-module.exports = { isEmptyBody, isValidId, isEmptyFav };
+module.exports = { isValidId, authenticate };
