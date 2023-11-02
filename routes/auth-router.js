@@ -8,7 +8,10 @@ const {
 } = require("../controlers/authControlers");
 const { authenticate, upload } = require("../middlewares/index");
 const { validateBody } = require("../decorators/index");
-const { userSignupSchema, userSigninSchema } = require("../db/User");
+const {
+  userSignupSchema,
+  userSigninSchema,
+} = require("../utils/validations/contactValidationSchemas");
 const authControlers = require("../controlers/authControlers");
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);

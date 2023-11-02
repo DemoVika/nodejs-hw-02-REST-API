@@ -9,7 +9,10 @@ const {
 // const router = express.Router();
 const { authenticate, isValidId, upload } = require("../middlewares/index");
 const { validateBody } = require("../decorators/index");
-const { schema, schemaFav } = require("../db/contacts-schema");
+const {
+  schema,
+  schemaFav,
+} = require("../utils/validations/contactValidationSchemas");
 
 const contactAddValidate = validateBody(schema);
 const contactUpdateFavValidate = validateBody(schemaFav);

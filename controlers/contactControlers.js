@@ -26,14 +26,11 @@ const getOneContact = async (req, res, next) => {
 };
 
 const createContact = async (req, res, next) => {
-  console.log(req.user);
   const { _id: owner } = req.user;
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarsPath, filename);
   await fs.rename(oldPath, newPath);
   const avatar = path.join("avatars", filename);
-  // console.log(req.body);
-  // console.log(req.file);
   try {
     const newContact = await Contact.create({ ...req.body, avatar, owner });
     res.status(201).json(newContact);
