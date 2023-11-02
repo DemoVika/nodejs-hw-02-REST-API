@@ -1,14 +1,15 @@
 const express = require("express");
 const {
   signup,
+  changeAvatar,
   signin,
   getCurrent,
   signout,
 } = require("../controlers/authControlers");
-const { authenticate } = require("../middlewares/index");
+const { authenticate, upload } = require("../middlewares/index");
 const { validateBody } = require("../decorators/index");
 const { userSignupSchema, userSigninSchema } = require("../db/User");
-
+const authControlers = require("../controlers/authControlers");
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
 
@@ -18,5 +19,10 @@ authRouter.post("/signup", userSignupValidate, signup);
 authRouter.post("/signin", userSigninValidate, signin);
 authRouter.post("/current", authenticate, getCurrent);
 authRouter.post("/signout", authenticate, signout);
-
+authRouter.patch(
+  "/users/avatars",
+  upload.single("avatarUrl"),
+  authenticate,
+  changeAvatar
+);
 module.exports = { authRouter };
