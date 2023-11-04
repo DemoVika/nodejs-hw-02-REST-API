@@ -12,7 +12,6 @@ const {
   userSignupSchema,
   userSigninSchema,
 } = require("../utils/validations/contactValidationSchemas");
-const authControlers = require("../controlers/authControlers");
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
 
@@ -24,7 +23,7 @@ authRouter.post("/current", authenticate, getCurrent);
 authRouter.post("/signout", authenticate, signout);
 authRouter.patch(
   "/users/avatars",
-  upload.single("avatarUrl"),
+  upload.single("avatar"),
   authenticate,
   changeAvatar
 );

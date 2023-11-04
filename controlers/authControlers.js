@@ -7,6 +7,10 @@ require("dotenv").config();
 const { JWT_SECRET } = process.env;
 const gravatar = require("gravatar");
 const Jimp = require("jimp");
+const path = require("path");
+const fs = require("fs/promises");
+
+const avatarsPath = path.resolve("public", "avatars");
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -26,30 +30,6 @@ const signup = async (req, res) => {
     username: newUser.username,
     email: newUser.email,
     avatarUrl: gravatar.url(email),
-  });
-};
-
-const changeAvatar = async (req, res) => {
-  const { _id } = req.user;
-
-  if (!_id) {
-    throw HttpError(401, "Not authorized");
-  }
-
-  const { path: oldPath, filename } = req.file;
-  const newPath = path.join(avatarsPath, filename);
-
-  await fs.rename(oldPath, newPath);
-
-  const image = await Jimp.read(newPath);
-  image.resize(250, 250);
-  await image.writeAsync(newPath);
-
-  const avatarUrl = path.join("avatars", filename);
-  await User.findByIdAndUpdate(_id, { avatarUrl: avatarUrl });
-
-  res.json({
-    message: `"avatarUrl": ${avatarUrl}`,
   });
 };
 
@@ -81,6 +61,29 @@ const signout = async (req, res) => {
   await User.findByIdAndUpdate(_id, { token: "" });
 
   res.json({ message: "Signout success" });
+};
+
+const changeAvatar = async (req, res) => {
+  const { _id } = req.user;
+
+  if (!_id) {
+    throw HttpError(401, "Not authorized");
+  }
+
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarsPath, filename);
+
+  await fs.rename(oldPath, newPath);
+  const image = await Jimp.read(newPath);
+  image.resize(250, 250);
+  await image.writeAsync(newPath);
+
+  const avatarUrl = path.join("avatars", filename);
+  await User.findByIdAndUpdate(_id, { avatarUrl: avatarUrl });
+
+  res.json({
+    message: `"avatar": ${avatarUrl}`,
+  });
 };
 
 module.exports = {
