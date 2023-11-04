@@ -7,9 +7,12 @@ const {
   deleteContact,
 } = require("../controlers/contactControlers");
 // const router = express.Router();
-const { authenticate, isValidId } = require("../middlewares/index");
+const { authenticate, isValidId, upload } = require("../middlewares/index");
 const { validateBody } = require("../decorators/index");
-const { schema, schemaFav } = require("../db/contacts-schema");
+const {
+  schema,
+  schemaFav,
+} = require("../utils/validations/contactValidationSchemas");
 
 const contactAddValidate = validateBody(schema);
 const contactUpdateFavValidate = validateBody(schemaFav);
@@ -22,7 +25,12 @@ contactsRouter.get("/", getAllContacts);
 
 contactsRouter.get("/:id", isValidId, getOneContact);
 
-contactsRouter.post("/", contactAddValidate, createContact);
+contactsRouter.post(
+  "/",
+  upload.single("avatar"),
+  contactAddValidate,
+  createContact
+);
 
 contactsRouter.put("/:id", isValidId, contactAddValidate, updateContact);
 

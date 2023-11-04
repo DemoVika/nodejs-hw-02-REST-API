@@ -1,4 +1,7 @@
 const { Contact } = require("../db/contacts-schema");
+const fs = require("fs/promises");
+const path = require("path");
+const avatarsPath = path.resolve("public", "avatars"); // абсолютный путь к аватарс
 
 const getAllContacts = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -23,10 +26,13 @@ const getOneContact = async (req, res, next) => {
 };
 
 const createContact = async (req, res, next) => {
-  console.log(req.user);
   const { _id: owner } = req.user;
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarsPath, filename);
+  await fs.rename(oldPath, newPath);
+  const avatar = path.join("avatars", filename);
   try {
-    const newContact = await Contact.create({ ...req.body, owner });
+    const newContact = await Contact.create({ ...req.body, avatar, owner });
     res.status(201).json(newContact);
   } catch (error) {
     res.status(400).json({ message: error.message });
