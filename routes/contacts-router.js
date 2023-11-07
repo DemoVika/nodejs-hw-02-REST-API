@@ -6,7 +6,6 @@ const {
   updateContact,
   deleteContact,
 } = require("../controlers/contactControlers");
-// const router = express.Router();
 const { authenticate, isValidId, upload } = require("../middlewares/index");
 const { validateBody } = require("../decorators/index");
 const {

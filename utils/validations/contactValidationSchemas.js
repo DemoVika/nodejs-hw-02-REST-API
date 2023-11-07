@@ -14,6 +14,10 @@ const userSigninSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const userEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+});
+
 const schema = Joi.object({
   id: Joi.string(),
   name: Joi.string().required(),
@@ -26,4 +30,10 @@ const schemaFav = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
-module.exports = { userSignupSchema, userSigninSchema, schema, schemaFav };
+module.exports = {
+  userSignupSchema,
+  userSigninSchema,
+  userEmailSchema,
+  schema,
+  schemaFav,
+};
